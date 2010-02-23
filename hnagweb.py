@@ -15,9 +15,15 @@ class Home(webapp.RequestHandler):
     path = os.path.join(os.path.dirname(__file__), 'index.html')
     self.response.out.write(template.render(path, {}))
 
+class Credits(webapp.RequestHandler):
+  def get(self):
+    path = os.path.join(os.path.dirname(__file__), 'credits.html')
+    self.response.out.write(template.render(path, {}))
+
 def main():
   application = webapp.WSGIApplication([
       ('/', Home),
+      ('/credits', Credits),
       ], debug=True)
   wsgiref.handlers.CGIHandler().run(application)
 
