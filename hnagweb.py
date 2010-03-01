@@ -25,7 +25,6 @@ class Home(webapp.RequestHandler):
   def get(self):
     homepage = memcache.get(HOMEPAGE_KEY)
     if homepage:
-      logging.info('found homepage in memcache')
       self.response.out.write(homepage)
       return
     
@@ -33,13 +32,13 @@ class Home(webapp.RequestHandler):
     template_values = {}
     render_page = template.render(path, template_values)
     memcache.add(HOMEPAGE_KEY, render_page, MEMCACHE_EXPIRE)
+    logging.info('did not find homepage in memcache; inserting ...')
     self.response.out.write(template.render(path, {}))
      
 class Credits(webapp.RequestHandler):
   def get(self):
     page = memcache.get(CREDITS_KEY)
     if page:
-      logging.info('found credits in memcache')
       self.response.out.write(page)
       return
     
@@ -47,6 +46,7 @@ class Credits(webapp.RequestHandler):
     template_values = {}
     render_page = template.render(path, template_values)
     memcache.add(CREDITS_KEY, render_page, MEMCACHE_EXPIRE)
+    logging.info('did not find credits in memcache; inserting ...')
     self.response.out.write(template.render(path, {}))
 
 def main():
